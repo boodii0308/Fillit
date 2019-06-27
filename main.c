@@ -6,7 +6,7 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 10:21:24 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/06/12 03:20:07 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/06/26 17:24:13 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char			**get_array(int fd)
 		if (k == 4)
 		{
 			k = 0;
-			arr[i++][j] = '\0';			
+			arr[i][j] = '\0';
+			i++;
 			j = 0;
 		}
 		else if (buff[0] == '\n')
@@ -37,6 +38,7 @@ char			**get_array(int fd)
 		else
 			arr[i][j++] = buff[0];
 	}
+	arr[i][j] = '\0';
 	return (arr);
 }
 
@@ -62,6 +64,36 @@ void				print_arr(char **s)
 	}
 }
 
+void 				print_answer(char *s)
+{
+	int i;
+
+	i = 0;
+	while (s[i])
+	{
+		ft_putchar(s[i]);
+		i++;
+		if (i % sizeofsquare == 0)
+			ft_putchar('\n');
+	}
+}
+
+void finish_him(int l, int fd, char **arr, char *lol)
+{
+	int i;
+	
+	i = 0;
+	while (arr[i])
+	{
+		ft_strdel(&arr[i]);
+		i++;
+	}
+	ft_putstr("error\n");
+	ft_strdel(&lol);
+	close (fd);
+	close (l);
+}
+
 int					main(int arc,char **arv)
 {
 	int fd;
@@ -80,7 +112,12 @@ int					main(int arc,char **arv)
 			l = open(lol, O_RDONLY);
 			arr = get_array(l);
 			if (valid_file(arr))
-				print_arr(arr);
+			{
+			//	print_arr(arr);
+				solve (arr);
+			}
+			else
+				finish_him(l, fd, arr, lol);
 		}
 		else
 		{
