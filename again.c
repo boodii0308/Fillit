@@ -6,98 +6,108 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 21:16:33 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/06/26 19:53:08 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/07/03 13:58:13 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int match(char **arr, char *s, int lol, int fibonacci)
+/*int			match(char **arr, char *s, int lol, int fibonacci)
+  {
+  char	*smalltet;
+  int		i;
+  int		y;
+
+  if (lol == g_tetriminos)
+  return (1);
+  y = g_sizeofsquare - 4;
+  smalltet = iden(arr[lol]);
+  if (y != 0)
+  {
+  if (shapechecker(arr, smalltet) && y < 0)
+  if (smaller(smalltet, s, arr))
+  return (1);
+  smalltet = resize(iden(arr[lol]), y);
+  }
+  if (changer(smalltet, s, fibonacci, 0))
+  {
+  i = check_this(smalltet, s, fibonacci, 0);
+  build('A' + lol, kicker(i, smalltet, s));
+  return (match(arr, s, ++lol, 1)) ? 1 :
+  match(arr, news('A' + (lol - 1), s), lol - 1, ++fibonacci);
+  }
+  return (0);
+  }*/
+
+int			match(char **arr, char *s, int lol, int fibonacci)
 {
-	char *smalltet;
-	int i;
-	int y;
-	
-//	print_answer(s);
-//	ft_putchar('\n');
-	if (lol == tetriminos)
-	{
-		print_answer(s);
+	char	*smalltet;
+	int		i;
+	int		y;
+
+	if (lol == g_tetriminos)
 		return (1);
-	}
-	y = sizeofsquare - 4;
-	smalltet = ft_strcpy(ft_strnew(ft_strlen(iden(arr[lol]))), iden(arr[lol]));
-	if (y != 0)
-		smalltet = ft_strdup(resize(smalltet, y));
- 	if (changer(smalltet, s, fibonacci))
+	y = g_sizeofsquare - 4;
+	if (shapechecker(arr, iden(arr[lol])) && y < 0)
+		if (smaller(iden(arr[lol]), s, arr))
+			return (1);
+	smalltet = resize(iden(arr[lol]), y);
+	while (fibonacci < (int)ft_strlen(s))
 	{
- 		i = check_this(smalltet, s, fibonacci);
-		build('A' + lol,kicker(i,smalltet, s));
-		return (match(arr, s, ++lol, 1)) ? 1 : match(arr, news('A' + (lol - 1), s), lol - 1, ++fibonacci);
+		if (changer(smalltet, s, fibonacci, 0))
+		{
+			i = check_this(smalltet, s, fibonacci, 0);
+			build('A' + lol, kicker(i, smalltet, s));
+			if (match(arr, s, ++lol, 1))
+				return (1);
+			else
+				news('A' + (--lol), s);
+		}
+		fibonacci++;
 	}
+	ft_strdel(&smalltet);
 	return (0);
 }
 
-char *news(char c, char *s)
+int			double_check_this(char *c, char *s, int *id, int j)
 {
-	int i;
-	char *new;
-	
-	new = ft_strnew(ft_strlen(s));
-	i = 0;
-	while (*s)
-	{
-		while (*s >= c)
-		{
-			new[i++] = '.';
-			s++;
-		}
-		new[i++] = *s;
-		s++;
-	}
-	new[i] = '\0';
-	return (new);
+	j = hash_counter(c, D);
+	return ((c[D] == '.' && (ft_isalpha(s[I]) || s[I] == '.'))
+			|| ((c[D] == '#' && s[I] == '.'
+					&& I % g_sizeofsquare + j <= g_sizeofsquare))) ? 1 : 0;
 }
-int check_this(char *c, char *s, int t)
-{
-	int i;
-	int d;
-	int j;
 
-	j = 0;
-	d = 0;
-	i = 0;
-	while (s[i])
+int			check_this(char *c, char *s, int t, int j)
+{
+	int		id[2];
+
+	I = 0;
+	D = 0;
+	while (s[I])
 	{
-		j = hash_counter(c, d);
-		while((c[d] == '.' && (ft_isalpha(s[i]) || s[i] == '.')) 
-			||((c[d] == '#' && s[i] == '.' && i % sizeofsquare + j <= sizeofsquare)))
+		while (double_check_this(c, s, id, j))
 		{
-			j = 0;
-			i++;
-			d++;
-			if (c[d] == '\0' && t != 1)
+			I++;
+			D++;
+			if (c[D] == '\0' && t != 1)
 			{
-				i -=d - 1;
+				I -= D - 1;
 				t--;
-				d = 0;
+				D = 0;
 			}
-			j = hash_counter(c, d);
-			if (c[d] == '\0' && t == 1)
-				return (i - d);
+			if (c[D] == '\0' && t == 1)
+				return (I - D);
 		}
-		i -= d;
-		d = 0;
-		if ((ft_strlen(c) + i) > ft_strlen(s))
-			return (0);
-		i++;
+		I -= D;
+		D = 0;
+		I++;
 	}
 	return (0);
 }
 
-int hash_counter(char *c, int d)
+int			hash_counter(char *c, int d)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (c[d] == '#')
@@ -107,39 +117,32 @@ int hash_counter(char *c, int d)
 	}
 	return (i);
 }
-int changer(char *c, char *s, int t)
-{
-	int i;
-	int d;
-	int j;
 
-	j = 0;
-	d = 0;
-	i = 0;
-	while (s[i])
+int			changer(char *c, char *s, int t, int j)
+{
+	int		id[2];
+
+	I = 0;
+	D = 0;
+	while (s[I])
 	{
-		j = hash_counter(c, d);
-		while((c[d] == '.' && (ft_isalpha(s[i]) || s[i] == '.'))
-				|| (c[d] == '#' && s[i] == '.' && i % sizeofsquare + j <= sizeofsquare))
+		while (double_check_this(c, s, id, j))
 		{
-			j = 0;
-			i++;
-			d++;
-			if (c[d] == '\0' && t != 1)
+			I++;
+			if (c[++D] == '\0' && t != 1)
 			{
-				i -=d - 1;
+				I -= D - 1;
 				t--;
-				d = 0;
+				D = 0;
 			}
-			j = hash_counter(c, d);
-			if (c[d] == '\0' && t == 1)
+			if (c[D] == '\0' && t == 1)
 				return (1);
 		}
-		i -= d;
-		d = 0;
-		if ((ft_strlen(c) + i) > ft_strlen(s))
+		I -= D;
+		D = 0;
+		if ((ft_strlen(c) + I) > ft_strlen(s))
 			return (0);
-		i++;
+		I++;
 	}
 	return (0);
 }
