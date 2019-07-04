@@ -6,7 +6,7 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 10:21:24 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/07/01 23:04:02 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/07/03 17:01:50 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int			print_answer(char *s)
 	{
 		ft_putchar(s[i]);
 		i++;
-		if (i % g_sizeofsquare == 0)
+		if (i % g_square == 0)
 			ft_putchar('\n');
 	}
 	return (1);
@@ -99,5 +99,6 @@ int			main(int arc, char **arv)
 		else
 			finish_him(0, fd, NULL, lol);
 	}
+	while (1);
 	return (0);
 }

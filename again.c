@@ -5,59 +5,30 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/19 21:16:33 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/07/03 13:58:13 by tebatsai         ###   ########.fr       */
+/*   Created: 2019/07/03 16:22:43 by tebatsai          #+#    #+#             */
+/*   Updated: 2019/07/03 16:59:18 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-/*int			match(char **arr, char *s, int lol, int fibonacci)
-  {
-  char	*smalltet;
-  int		i;
-  int		y;
-
-  if (lol == g_tetriminos)
-  return (1);
-  y = g_sizeofsquare - 4;
-  smalltet = iden(arr[lol]);
-  if (y != 0)
-  {
-  if (shapechecker(arr, smalltet) && y < 0)
-  if (smaller(smalltet, s, arr))
-  return (1);
-  smalltet = resize(iden(arr[lol]), y);
-  }
-  if (changer(smalltet, s, fibonacci, 0))
-  {
-  i = check_this(smalltet, s, fibonacci, 0);
-  build('A' + lol, kicker(i, smalltet, s));
-  return (match(arr, s, ++lol, 1)) ? 1 :
-  match(arr, news('A' + (lol - 1), s), lol - 1, ++fibonacci);
-  }
-  return (0);
-  }*/
-
 int			match(char **arr, char *s, int lol, int fibonacci)
 {
-	char	*smalltet;
 	int		i;
 	int		y;
 
 	if (lol == g_tetriminos)
 		return (1);
-	y = g_sizeofsquare - 4;
+	y = g_square - 4;
 	if (shapechecker(arr, iden(arr[lol])) && y < 0)
 		if (smaller(iden(arr[lol]), s, arr))
 			return (1);
-	smalltet = resize(iden(arr[lol]), y);
 	while (fibonacci < (int)ft_strlen(s))
 	{
-		if (changer(smalltet, s, fibonacci, 0))
+		if (changer(resize(iden(arr[lol]), y), s, fibonacci, 0))
 		{
-			i = check_this(smalltet, s, fibonacci, 0);
-			build('A' + lol, kicker(i, smalltet, s));
+			i = check_this(resize(iden(arr[lol]), y), s, fibonacci, 0);
+			build('A' + lol, kicker(i, resize(iden(arr[lol]), y), s));
 			if (match(arr, s, ++lol, 1))
 				return (1);
 			else
@@ -65,7 +36,6 @@ int			match(char **arr, char *s, int lol, int fibonacci)
 		}
 		fibonacci++;
 	}
-	ft_strdel(&smalltet);
 	return (0);
 }
 
@@ -74,7 +44,7 @@ int			double_check_this(char *c, char *s, int *id, int j)
 	j = hash_counter(c, D);
 	return ((c[D] == '.' && (ft_isalpha(s[I]) || s[I] == '.'))
 			|| ((c[D] == '#' && s[I] == '.'
-					&& I % g_sizeofsquare + j <= g_sizeofsquare))) ? 1 : 0;
+					&& I % g_square + j <= g_square))) ? 1 : 0;
 }
 
 int			check_this(char *c, char *s, int t, int j)

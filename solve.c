@@ -6,13 +6,13 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/27 16:54:27 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/07/03 13:57:42 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/07/03 16:21:46 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int			back(const char *lol)
+int			back(char *lol)
 {
 	int		i;
 
@@ -23,7 +23,10 @@ int			back(const char *lol)
 		i++;
 	i--;
 	while (lol[i] == '.')
+	{
+		lol[i] = '\0';
 		i--;
+	}
 	return (i);
 }
 
@@ -36,6 +39,7 @@ char		*iden(char *dub)
 
 	i = 0;
 	g = 0;
+	c = dub;
 	if (!dub)
 		return (NULL);
 	len = back(dub);
@@ -45,8 +49,6 @@ char		*iden(char *dub)
 		if (dub[i] == '\0')
 			len = i;
 	}
-	if (!dub || !(c = (char*)malloc(sizeof(char) * (len) - i)))
-		return (NULL);
 	while (i <= len)
 		c[g++] = dub[i++];
 	c[g] = '\0';
@@ -78,11 +80,13 @@ char		*getsmaller(char *s, int k, int j)
 	int		i;
 	int		n;
 	char	*new;
+	char	*lol;
 
 	n = 0;
 	i = -j;
 	if (!(new = (char*)malloc(sizeof(char) * (ft_strlen(s) - (k * i) + 1))))
 		return (0);
+	lol = new;
 	while (*s)
 	{
 		i = -j;
@@ -91,13 +95,13 @@ char		*getsmaller(char *s, int k, int j)
 			if (i != 0 && *s++ == '.')
 				i--;
 			else
-				new[n++] = *s++;
+				lol[n++] = *s++;
 		}
-		new[n++] = *s;
-		s++;
+		lol[n++] = *s++;
 	}
-	new[n] = '\0';
-	return (new);
+	lol[n] = '\0';
+	ft_strdel(&new);
+	return (lol);
 }
 
 char		*getbigger(char *s, int k, int j)
@@ -105,23 +109,26 @@ char		*getbigger(char *s, int k, int j)
 	int		n;
 	int		i;
 	char	*new;
+	char	*lol;
 
 	n = 0;
 	if (!(new = (char*)malloc(sizeof(char) * (ft_strlen(s) + (k * j) + 1))))
 		return (0);
+	lol = new;
 	while (*s)
 	{
 		i = j;
 		while (*s == '.')
 		{
-			new[n++] = *s;
+			lol[n++] = *s;
 			while (i-- > 0)
-				new[n++] = '.';
+				lol[n++] = '.';
 			s++;
 		}
-		new[n++] = *s;
+		lol[n++] = *s;
 		s++;
 	}
-	new[n] = '\0';
-	return (new);
+	lol[n] = '\0';
+	ft_strdel(&new);
+	return (lol);
 }

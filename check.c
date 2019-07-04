@@ -6,7 +6,7 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/13 16:07:21 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/07/01 23:04:39 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/07/03 16:58:00 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,6 @@ char		*kicker(int i, char *c, char *s)
 	return (NULL);
 }
 
-int			deleteit(char **s)
-{
-	if (s)
-	{
-		free(*s);
-		*s = NULL;
-		return (1);
-	}
-	return (0);
-}
-
 char		*filler(char *yes, int i)
 {
 	int		l;
@@ -95,4 +84,33 @@ char		*news(char c, char *s)
 	}
 	s[i] = '\0';
 	return (s);
+}
+
+void		finishthework(char **arr, char *lol)
+{
+	int		i;
+	char	*yes;
+	int		tetriminos;
+
+	i = 0;
+	tetriminos = g_tetriminos;
+	g_square++;
+	while ((g_square * g_square) < (tetriminos * 4))
+		g_square++;
+	yes = filler(ft_strnew((g_square * g_square)), g_square);
+	while (!(i))
+	{
+		if ((match(arr, yes, 0, 1)))
+		{
+			print_answer(yes);
+			i = 1;
+		}
+		ft_strdel(&yes);
+		g_square++;
+		yes = filler(ft_strnew((g_square * g_square)), g_square);
+	}
+	ft_strdel(&yes);
+	ft_strdel(&lol);
+	while (arr[i])
+		ft_strdel(&arr[i++]);
 }
