@@ -6,7 +6,7 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 12:34:08 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/06/11 10:29:48 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/07/08 16:31:43 by tebatsai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define LIBFT_H
 
 # define BUFF_SIZE 1
-# define I ij[0]
-# define J ij[1]
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>

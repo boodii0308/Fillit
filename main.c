@@ -6,7 +6,7 @@
 /*   By: tebatsai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/11 10:21:24 by tebatsai          #+#    #+#             */
-/*   Updated: 2019/07/03 17:01:50 by tebatsai         ###   ########.fr       */
+/*   Updated: 2019/07/03 17:41:20 by sholiak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,5 @@ int			main(int arc, char **arv)
 		else
 			finish_him(0, fd, NULL, lol);
 	}
-	while (1);
 	return (0);
 }
